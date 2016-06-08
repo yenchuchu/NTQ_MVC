@@ -102,10 +102,3 @@
     </div>
 
 </div>
-
-<?php //foreach($users as $user) { ?>
-  <!-- <p> -->
-    <?php //echo $user->author; ?>
-    <!-- <a href='?controller=posts&action=show&id=<?php echo $user->id; ?>'>See content</a> -->
-  <!-- </p> -->
-<?php //} ?>
