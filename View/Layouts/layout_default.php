@@ -15,15 +15,7 @@
 </head>
 <body> 
 
-  
   <?php require 'View/'.$result['view'].'.php'; ?>
-      
-              <?php
-              if (!empty($_SESSION['message'])):
-                  echo "<h3>{$_SESSION['message']}</h3>";
-                  unset($_SESSION['message']);
-              endif;
-              ?>  
- 
+    
   </body>
 </html>
