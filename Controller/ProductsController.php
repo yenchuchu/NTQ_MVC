@@ -79,6 +79,7 @@ class ProductsController {
             $uploadOk = 1;
             $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
             $image = basename($_FILES["fileToUpload"]["name"]); 
+            $result['add-image'] = $image;
 
             if(!empty($_FILES["fileToUpload"]["tmp_name"])) {
                 $checkImage = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
@@ -90,10 +91,20 @@ class ProductsController {
             } 
 
             $check = $product->add($idAuth, $product_name, $category, $price, $description, $image, $activate);
-            if($price < 0 || $price >= 10000000000) {
-                $result['message-price'] = "Price must be larger than 0 and less than 10000000000!";
+            if(!empty($check['message-price'])) {
+                $result['message-price'] = $check['message-price'];
+
+            } elseif (!empty($check['message-prName'])) {
+                $result['message-prName'] = $check['message-prName'];
+
+            } elseif (!empty($check['message-category'])) {
+                $result['message-category'] = $check['message-category'];
+                
+            } elseif (!empty($check['message-activate'])) {
+                $result['message-activate'] = $check['message-activate'];
+
             } elseif($check == false) {
-                $result['message'] = "Product name existed!"; 
+                $result['message-prName'] = "Product name existed!"; 
             } else {
                 if($checkImage != 0) {
                     move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file) ;

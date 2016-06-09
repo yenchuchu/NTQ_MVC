@@ -56,8 +56,15 @@ class CategoriesController {
             $activate = $_POST['activate'];
             
             $check = $category->add($idAuth, $categoryName, $activate);
-            if($check == false) {
-               $result['message'] = "Category name existed!"; 
+            if(!empty($check['message-cateName'])) {
+                $result['message-cateName'] = $check['message-cateName'];
+
+            } elseif(!empty($check['message-activate'])) {
+               $result['message-activate'] = $check['message-activate'] ; 
+
+            } elseif($check == false) {
+               $result['message-cateName'] = "Category name existed!"; 
+
             } else{
                 header('Location: ?controller=Categories&action=index');
             }
@@ -80,8 +87,15 @@ class CategoriesController {
             $activate = $_POST['select'];
 
             $check = CategoryModel::edit($id, $categoryName, $activate);
-            if($check == false) {
-               $result['message'] = "Category name existed!"; 
+            if(!empty($check['message-cateName'])) {
+                $result['message-cateName'] = $check['message-cateName'];
+
+            } elseif(!empty($check['message-activate'])) {
+               $result['message-activate'] = $check['message-activate'] ; 
+
+            } elseif($check == false) {
+               $result['message-cateName'] = "Category name existed!"; 
+
             } else {
                 header('Location: ?controller=Categories&action=index');
             } 
