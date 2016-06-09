@@ -33,11 +33,15 @@
                             <div class="span3">Product Name:</div>
                             <div class="span9">
                                 <input type="text" placeholder="some text value..." 
-                                       value="<?php echo $result['Clist']['product_name']; ?>" name="edit-product-name" />
+                                        name="edit-product-name" required
+                                       value="<?php if (isset($_POST['edit-product-name'])) { 
+                                                        echo $_POST['edit-product-name']; 
+                                                    } else {
+                                                        echo $result['Clist']['product_name'];} ?>"  />
                             </div>
                             <div class="clear"></div>
-                            <span id="message"><?php if (isset($result['message'])) {
-                                    echo $result['message'] ;
+                            <span id="message"><?php if (isset($result['message-prName'])) {
+                                    echo $result['message-prName'] ;
                                 } ?></span>
                         </div>
                         <div class="row-form">
@@ -66,8 +70,10 @@
                     	<div class="row-form">
                             <div class="span3">Price:</div>
                             <div class="span9">
-                               <input type="number" placeholder="some text value..." id="add-price"
-                                       value="<?php echo $result['Clist']['price'] ; ?>" name="edit-price" />
+                               <input type="number" placeholder="some text value..." id="add-price" name="edit-price"
+                                       value="<?php if (isset($_POST['edit-price'])) { 
+                                                        echo $_POST['edit-price']; 
+                                                    } else{ echo $result['Clist']['price'];} ?>" required  />
                             </div>
                             <div class="clear"></div>
                             <span id="message"><?php if (isset($result['message-price'])) {
@@ -79,21 +85,9 @@
                             <div class="span9"> 
                                 <textarea name="description" placeholder="Textarea field placeholder..."><?php
                                             $description = trim($result['Clist']['description']); 
-                                            echo $description;  ?></textarea>
-                            </div>
-                            <div class="clear"></div>
-                        </div> 
-                    	<div class="row-form">
-                            <div class="span3">Upload Image:</div>
-                            <div class="span9">
-                            <img src="img/products/1.jpg" />
-                            <img src="img/products/2.jpg" />
-                            <img src="img/products/3.jpg" />
-                            <img src="img/products/4.jpg" />
-                            <img src="img/products/5.jpg" />
-                            <img src="img/products/6.jpg" />
-                            <br/>
-                            <input type="file" name="file" size="19">
+                                            if (isset($_POST['description'])) { 
+                                                echo $_POST['description'];
+                                            } else{ echo $description; } ?></textarea>
                             </div>
                             <div class="clear"></div>
                         </div> 
@@ -101,12 +95,27 @@
                             <div class="span3">Activate:</div>
                             <div class="span9">
                                 <select name="select-activate" required>
-                                    <option value="">choose a option...</option>
-                                    <option value="1" <?php if($result['Clist']['activate'] == 1) echo ' selected="selected"'; ?> >Activate</option>
-                                    <option value="2" <?php if($result['Clist']['activate'] == 2) echo ' selected="selected"'; ?> >Deactivate</option>
-                                </select>
+                                <?php  
+                                    if (isset($_POST['select-activate'])) {
+                                        $select_activate = $_POST['select-activate']; ?>
+                                        <option value="">choose a option...</option>
+                                        <option value="1" <?php if ($select_activate == 1) { 
+                                                                    echo 'selected="selected"'; 
+                                                                }; ?> >Activate </option>
+                                        <option value="2" <?php if ($select_activate == 2) {
+                                                                    echo 'selected="selected"'; 
+                                                                }; ?> >Deactivate</option>
+                                    <?php } else { ?>
+                                        <option value="">choose a option...</option>
+                                        <option value="1" <?php if($result['Clist']['activate'] == 1) echo ' selected="selected"'; ?> >Activate</option>
+                                        <option value="2" <?php if($result['Clist']['activate'] == 2) echo ' selected="selected"'; ?> >Deactivate</option>
+                                    <?php } ?>  
+                                    </select>
                             </div>
                             <div class="clear"></div>
+                            <span id="message"><?php if (isset($result['message-activate'])) {
+                                    echo $result['message-activate'] ;
+                                } ?></span>
                         </div>                          
                         <div class="row-form">
                         	<button class="btn btn-success" type="submit" name="Update">Update</button>

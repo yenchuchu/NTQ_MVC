@@ -25,14 +25,39 @@ class ProductModel {
 
   public function add($user_id, $product_name, $category_id, $price, $description, $image, $activate)
   { 
+      if (empty(trim($product_name))) {
+        $result['message-prName'] = "Product name is not null";
+        return $result;
+    }
+
+    if (empty($price)) {
+        $result['message-price'] = "Price is not null!";
+        return $result;
+    }
+
+    if($price < 0 || $price >= 4294967000) {
+        $result['message-price'] = "Price must be larger than 0 and less than 4 294 967 000 VND!";
+        return $result;
+    }
+
+    if (empty($category_id)) {
+      $result['message-category'] = "You must choose a category";
+      return $result;
+    }
+
+    if (empty($activate)) {
+      $result['message-activate'] = "You must choose activate or deactivate";
+      return $result;
+    } 
+
     date_default_timezone_set("Asia/Bangkok");
     $thisDay = date(" Y/m/d h:i"); 
 
     $sql = "INSERT INTO products (user_id, product_name, category_id, price, description, 
                                   activate, created, modified, image, item_delete) 
-            VALUES ('" . $user_id ."', '".mysql_escape_string($product_name)."', 
+            VALUES ('" . $user_id ."', '".mysql_escape_string(trim($product_name))."', 
                     '".$category_id."', '".$price."', 
-                    '".$description."', '".$activate."', 
+                    '".trim($description)."', '".$activate."', 
                     '".$thisDay."', '".$thisDay."','".$image."', '1')";
     $query = mysql_query($sql);
     if ($query == false) {
@@ -43,29 +68,48 @@ class ProductModel {
 
   public function edit($id, $product_name, $activate, $price, $description, $image)
   {   
+      if (empty(trim($product_name))) {
+        $result['message-prName'] = "Product name is not null";
+        return $result;
+    }
+
+    if (empty($price)) {
+        $result['message-price'] = "Price is not null!";
+        return $result;
+    }
+
+    if($price < 0 || $price >= 4294967000) {
+        $result['message-price'] = "Price must be larger than 0 and less than 4 294 967 000 VND!";
+        return $result;
+    } 
+
+    if (empty($activate)) {
+      $result['message-activate'] = "You must choose activate or deactivate";
+      return $result;
+    }
+
     date_default_timezone_set("Asia/Bangkok");
     $thisDay = date(" Y/m/d h:i"); 
 
     if ($image == "") {
       $sql = "UPDATE products SET  
-                    product_name = '".$product_name ."',
+                    product_name = '".trim($product_name)."',
                     activate = '".$activate ."', 
                     price ='".$price."', 
-                    description = '".$description."', 
+                    description = '".trim($description)."', 
                     modified = '".$thisDay ."' 
                     WHERE id = '".$id."'";
     } else {
       $sql = "UPDATE products SET  
-                    product_name = '".$product_name ."',
+                    product_name = '".trim($product_name)."',
                     activate = '".$activate ."', 
                     price ='".$price."', 
                     description = '".$description."', 
                     image = '".$image."',  
                     modified = '".$thisDay ."' 
                     WHERE id = '".$id."'";
-    }
+    } 
     
-
     $query = mysql_query($sql);
     if ($query == false) {
       return false;

@@ -32,24 +32,37 @@
                             <div class="span3">Category Name:</div>
                             <div class="span9">
                             	<input type="text"  placeholder="some text value..." 
-                            			value="<?php echo $result['Clist']['category_name'];?> " 
-                						name="edit-category-name" required>
+                                        value="<?php if (isset($_POST['edit-category-name'])) { 
+                                                        echo $_POST['edit-category-name']; 
+                                                    } else {
+                                                        echo $result['Clist']['category_name'];} ?>"
+                                        name="edit-category-name" required >
                             </div>
                             <div class="clear"></div>
-                            <span id="message"><?php if (isset($result['message'])) {
-                                    echo $result['message'] ;
+                            <span id="message"><?php if (isset($result['message-cateName'])) {
+                                    echo $result['message-cateName'] ;
                                 } ?></span>
                         </div> 
                         <div class="row-form">
                             <div class="span3">Activate:</div>
                             <div class="span9">
-                                <select name="select" name="edit-activate" >
-                                        <option value="0">choose a option...</option>
+                                <select name="select" name="edit-activate" required  >
+                                <?php if (isset($_POST['select'])) {
+                                        $select_activate = $_POST['select']; ?>
+                                        <option value="">choose a option...</option>
+                                        <option value="1" <?php if($select_activate == 1) echo ' selected="selected"'; ?> >Activate</option>
+                                        <option value="2" <?php if($select_activate == 2) echo ' selected="selected"'; ?> >Deactivate</option>
+                                <?php } else { ?> 
+                                        <option value="">choose a option...</option>
                                         <option value="1" <?php if($result['Clist']['activate'] == 1) echo ' selected="selected"'; ?> >Activate</option>
                                         <option value="2" <?php if($result['Clist']['activate'] == 2) echo ' selected="selected"'; ?> >Deactivate</option>
+                               <?php } ?>
                                 </select>
                             </div>
                             <div class="clear"></div>
+                            <span id="message"><?php if (isset($result['message-activate'])) {
+                                    echo $result['message-activate'] ;
+                                } ?></span>
                         </div>                          
                         <div class="row-form">
                         	<button class="btn btn-success" type="submit" name="Update">Update</button>

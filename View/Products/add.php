@@ -33,18 +33,22 @@
                     	<div class="row-form">
                             <div class="span3">Product Name:</div>
                             <div class="span9">
-                                <input type="text" placeholder="enter product name..." name="product-name" required/>
+                                <input type="text" placeholder="enter product name..." name="product-name" 
+                                        value="<?php if (isset($_POST['product-name'])) { 
+                                                        echo $_POST['product-name']; }?>" 
+                                        required />
                             </div>
                             <div class="clear"></div>
-                            <span id="message"><?php if (isset($result['message'])) {
-                                    echo $result['message'] ;
+                            <span id="message"><?php if (isset($result['message-prName'])) {
+                                    echo $result['message-prName'] ;
                                 } ?></span>
                         </div> 
                     	<div class="row-form">
                             <div class="span3">Price:</div>
                             <div class="span9">
                                 <input type="number" placeholder="enter money..." name="price"
-                                        id="add-price" required/>
+                                        id="add-price" value="<?php if (isset($_POST['price'])) { 
+                                                        echo $_POST['price']; }?>" required />
                             </div>
                             <div class="clear"></div>
                              <span id="message"><?php if (isset($result['message-price'])) {
@@ -54,20 +58,32 @@
                     	<div class="row-form">
                             <div class="span3">Description:</div>
                             <div class="span9">
-                                <textarea name="description" placeholder="add a description..."></textarea>
+                                <textarea name="description" placeholder="add a description..."><?php 
+                                                    if (isset($_POST['description'])) { 
+                                                        echo $_POST['description'];} ?></textarea>
                             </div>
                             <div class="clear"></div>
                         </div>
                         <div class="row-form">
                             <div class="span3">Category:</div>
                             <div class="span9">
-                            <select name="select-category">
+                            <select name="select-category" required >
+                                <option value="">choose a option...</option>
                                 <?php foreach ($result['categories'] as $category) {
-                                   echo "<option value='".$category['id']."'>".$category['category_name']."</option>";
+                                    $selected = '';
+                                    if (isset($_POST['select-category'])) {
+                                        if ($category['id'] == $_POST['select-category']) {
+                                             $selected = 'selected="selected"';
+                                        }
+                                    } 
+                                   echo "<option value='".$category['id']."'".$selected.">".$category['category_name']."</option>";
                                 } ?> 
                             </select>
                             </div>
                             <div class="clear"></div>
+                            <span id="message"><?php if (isset($result['message-category'])) {
+                                    echo $result['message-category'] ;
+                                } ?></span>
                         </div>
 
                         <div class="row-form">
@@ -92,13 +108,23 @@
                         <div class="row-form">
                             <div class="span3">Activate:</div>
                             <div class="span9">
-                                <select name="select-activate" required >
+                                <select name="select-activate" required>
+                                    <?php 
+                                        $select_activate = '';
+                                        if (isset($_POST['select-activate'])) {
+                                            $select_activate = $_POST['select-activate'];
+                                        } ?>
                                     <option value="">choose a option...</option>
-                                    <option value="1">Activate</option>
-                                    <option value="2">Deactivate</option>
+                                    <option value="1" <?php if ($select_activate == 1) {
+                                        echo 'selected="selected"'; }; ?> >Activate</option>
+                                    <option value="2" <?php if ($select_activate == 2) {
+                                        echo 'selected="selected"'; }; ?> >Deactivate</option>
                                 </select>
                             </div>
                             <div class="clear"></div>
+                            <span id="message"><?php if (isset($result['message-activate'])) {
+                                    echo $result['message-activate'] ;
+                                } ?></span>
                         </div>                          
                         <div class="row-form">
                         	<button class="btn btn-success" type="submit" 

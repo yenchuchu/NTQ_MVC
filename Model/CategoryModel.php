@@ -20,14 +20,41 @@ class CategoryModel {
     }
     return $result;
   }
+  
+  public function getListActivate()
+  {
+    $sql = "SELECT * FROM categories 
+            WHERE item_delete = '1' AND activate = '1' 
+            ORDER BY id DESC LIMIT 10";
+    $query = mysql_query($sql);
+    if($query === false) {
+      return array();
+    }
+
+    $result = array();
+    while ($row = mysql_fetch_assoc($query)) {
+      $result[] = $row;
+    }
+    return $result;
+  }
 
   public function add($user_id, $category_name, $activate)
   { 
+    if (empty(trim($category_name))) {
+        $result['message-cateName'] = "Category name is not null";
+        return $result;
+    }
+
+    if (empty($activate)) {
+        $result['message-activate'] = "You must choose activate or deactivate";
+        return $result;
+    }
+    
     date_default_timezone_set("Asia/Bangkok");
     $thisDay = date(" Y/m/d h:i"); 
 
     $sql = "INSERT INTO categories (user_id, category_name, activate, created, modified, item_delete) 
-            VALUES ('" . $user_id ."', '".mysql_escape_string($category_name)."', 
+            VALUES ('" . $user_id ."', '".mysql_escape_string(trim($category_name))."', 
                     '".$activate."', '".$thisDay."', '".$thisDay."', '1')";
     $query = mysql_query($sql);
     if ($query == false) {
@@ -38,11 +65,21 @@ class CategoryModel {
 
   public function edit($id, $category_name, $activate)
     {  
+      if (empty(trim($category_name))) {
+        $result['message-cateName'] = "Category name is not null";
+        return $result;
+      }
+
+      if (empty($activate)) {
+        $result['message-activate'] = "You must choose activate or deactivate";
+        return $result;
+      }
+      
       date_default_timezone_set("Asia/Bangkok");
       $thisDay = date(" Y/m/d h:i"); 
 
       $sql = "UPDATE categories SET  
-                    category_name = '". $category_name."', 
+                    category_name = '". trim($category_name)."', 
                     activate = '". $activate."',  
                     modified = '". $thisDay."'  
                     WHERE id = '".$id."'"; 
